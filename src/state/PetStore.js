@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, autorun } from 'mobx'
+import { action, computed, makeObservable, observable, autorun, runInAction } from 'mobx'
 
 class PetOwnerStore {
     pets = [];
@@ -21,6 +21,7 @@ class PetOwnerStore {
             assignOwnerToPet: action
         }) 
         autorun(() => this.logStoreDetails())
+        runInAction(() => this.prefetchData())
     }
 
     //pets
@@ -35,7 +36,7 @@ class PetOwnerStore {
         }
     }
 
-    removePet(petId) {
+    deletePet(petId) {
         const petIndexAtId = this.pets.findIndex( pet => pet.id === petId)
         if (petIndexAtId > -1) {
             this.pets.splice(petIndexAtId, 1)
@@ -52,6 +53,9 @@ class PetOwnerStore {
 
     //owners
     createOwner(owner = { id: 0, firstName: '', lastName: ''}) {
+        if(!owner.firstName || !owner.lastName) {
+            return 
+        }
         this.owners.push(owner)
     }
 
@@ -61,8 +65,8 @@ class PetOwnerStore {
             this.owners[ownerIndexAtId] = update
         }
     }
-
-    removeOwner(ownerId) {
+    
+    deleteOwner(ownerId) {
         const ownerIndexAtId = this.owners.findIndex( owner => owner.id === ownerId)
         if (ownerIndexAtId > -1) {
             this.owners.splice(ownerIndexAtId, 1)
@@ -83,11 +87,47 @@ class PetOwnerStore {
 
     //store
     get storeDetails() {
-        return `We have ${this.totalPets()} total pets and ${this.totalOwners} total Owners`
+        return `We have ${this.totalPets} total pets and ${this.totalOwners} total Owners`
     }
 
     logStoreDetails() {
         console.log(this.storeDetails)
     }
+
+    prefetchData = () => {
+        const owners = [
+            {
+                firstName: 'Elijah',
+                lastName: 'Smith',
+                id: 1
+            },
+            {
+                firstName: 'Joe',
+                lastName: 'Cohens',
+                id: 2
+            }
+        ]
+        const pets = [
+            {
+                id: 1,
+                name: 'Lucy',
+                breed: 'Pomeranian',
+                type: 'Dog',
+                ownerId: 1
+            }
+        ]
+
+        setTimeout(() => {
+            owners.forEach(owner => this.createOwner(owner))
+            pets.forEach(pet => {
+                this.createPet(pet);
+                if(pet.ownerId) {
+                     this.assignOwnerToPet(pet.ownerId, pet.id)
+                }
+               
+            })
+        }, 3000)
+    }
 }
 
+export default PetOwnerStore
