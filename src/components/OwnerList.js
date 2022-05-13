@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
+import StateContext from '../helpers/StateContext'
 import OwnerModal from './OwnerModal'
 
-function OwnerList({ store }) {
+function OwnerList() {
+    const store = useContext(StateContext)
+
     const handleAddOwner = (owner) => {
         store.createOwner(owner)
     }

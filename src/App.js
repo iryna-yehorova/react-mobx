@@ -1,14 +1,16 @@
+import StoreContext from './helpers/StateContext'
 import PetStore from './state/PetStore'
 import PetList from "./components/PetList"
 import OwnerList from './components/OwnerList'
 
 function App() {
   const store = new PetStore()
-
-  return (
+  return (  
     <div className="App">
-      <PetList store={store} />
-      <OwnerList store={store} />
+      <StoreContext.Provider value={store}>
+        <PetList />
+        <OwnerList />
+      </StoreContext.Provider>
     </div>
   );
 }

@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
+import StateContext from '../helpers/StateContext'
 import PetModal from './PetModal'
 
-function PetList({ store }) {
+function PetList() {
+    const store = useContext(StateContext)
+     
     const handleAddPet = pet => {
         store.createPet(pet);
         // store.assignOwnerToPet(ownerId, pet.id)
