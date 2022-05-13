@@ -2,6 +2,12 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import StateContext from '../helpers/StateContext'
 import OwnerModal from './OwnerModal'
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 function OwnerList() {
     const store = useContext(StateContext)
@@ -18,34 +24,57 @@ function OwnerList() {
         store.deleteOwner(owner.id)
     }
 
+    const columns = [
+        { id: 'id', label: 'Id', minWidth: 100 },
+        { id: 'firstName', label: 'First Name', minWidth: 150 },
+        { id: 'lastName', label: 'Last Name', minWidth: 150 },
+        { id: 'action'}
+    ];
+
     return (
         <div>
-            { store.storeDetails }
-            <table>
-                <thead>
-                    <tr>
-                        <th>##</th>
-                        <th>Owner first name</th>
-                        <th>Owner last name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {store.owners.map(owner => {
-                        return (
-                            <tr key={owner.id}>
-                                <td>{owner.id}</td>
-                                <td>{owner.firstName}</td>
-                                <td>{owner.lastName}</td>
-                                <td>
-                                    <button onClick={() => handleDeleteOwner(owner)}>Delete owner</button>
-                                    <OwnerModal onSubmit={handleUpdateOwner} title="Update owner" />
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {store.owners.map((row) => {
+                            return (
+                                <TableRow hover key={row.id}>
+                                    {columns.map((column) => {
+                                        if(column.id === 'action') {
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    <button onClick={() => handleDeleteOwner(row)}>Delete owner</button>
+                                                    <OwnerModal onSubmit={handleUpdateOwner} title='Update owner' />
+                                                </TableCell>
+                                            )
+                                        } else {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    {value}                        
+                                                </TableCell>
+                                            )
+                                        }
+                                    })}             
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>         
             <OwnerModal onSubmit={handleAddOwner} title="Add new owner"/>
         </div>
     )

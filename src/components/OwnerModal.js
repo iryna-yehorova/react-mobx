@@ -46,7 +46,7 @@ function OwnerModal({onSubmit, title}) {
                 aria-describedby="simple-modal-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    Write some information about pet
+                    Write some information
                 </DialogTitle>
                 <DialogContent>
                     <TextField 

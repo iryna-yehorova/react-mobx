@@ -85,7 +85,7 @@ class PetOwnerStore {
         }
     }
 
-    //store
+    //store 
     get storeDetails() {
         return `We have ${this.totalPets} total pets and ${this.totalOwners} total Owners`
     }
@@ -99,21 +99,20 @@ class PetOwnerStore {
             {
                 firstName: 'Elijah',
                 lastName: 'Smith',
-                id: 1
+                id: Date.now() + 13
             },
             {
                 firstName: 'Joe',
                 lastName: 'Cohens',
-                id: 2
+                id: Date.now() + 11
             }
         ]
         const pets = [
             {
-                id: 1,
+                id: Date.now() + 10,
                 name: 'Lucy',
                 breed: 'Pomeranian',
-                type: 'Dog',
-                ownerId: 1
+                type: 'Dog'
             }
         ]
 

@@ -2,6 +2,12 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import StateContext from '../helpers/StateContext'
 import PetModal from './PetModal'
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 function PetList() {
     const store = useContext(StateContext)
@@ -23,37 +29,58 @@ function PetList() {
         store.deletePet(pet.id)
     }
 
+    const columns = [
+        { id: 'id', label: 'Id', minWidth: 100 },
+        { id: 'name', label: 'Name', minWidth: 150 },
+        { id: 'breed', label: 'Breed', minWidth: 150 },
+        { id: 'type', label: 'Type', minWidth: 150 },
+        { id: 'action'}
+    ];
+
     return (
         <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>##</th>
-                        <th>Pet Name</th>
-                        <th>Pet Type</th>
-                        <th>Pet Breed</th>
-                        <th>Owner</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {store.pets.map(pet => {
-                        return (
-                            <tr key={pet.id}>
-                                <td>{pet.id}</td>
-                                <td>{pet.name}</td>
-                                <td>{pet.type}</td>
-                                <td>{pet.breed}</td>
-                                {/* <td>{pet.owner ? `${pet.owner?.firstName} ${pet.owner?.lastName}` : '---'}</td> */}
-                                <td> 
-                                    <button onClick={() => handleDeletePet(pet)}>Delete pet</button>
-                                    <PetModal onSubmit={handleUpdatePet} title="Update pet"/>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {store.owners.map((row) => {
+                            return (
+                                <TableRow hover key={row.id}>
+                                    {columns.map((column) => {
+                                        if(column.id === 'action') {
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                        <button onClick={() => handleDeletePet(row)}>Delete pet</button>
+                                                        <PetModal onSubmit={handleUpdatePet} title="Update pet"/>
+                                                </TableCell>
+                                            )
+                                        } else {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    {value}                        
+                                                </TableCell>
+                                            )
+                                        }
+                                    })}             
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>    
             <PetModal onSubmit={handleAddPet} title="Add new pet"/>
         </div>
     )
