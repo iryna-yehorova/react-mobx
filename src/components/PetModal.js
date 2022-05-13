@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from "@material-ui/core/TextField"
 import Button from '@mui/material/Button';
 
-function PetModal({onSubmit, title}) {
+function PetModal({onSubmit, title, pet = {}}) {
     const [open, setOpen] = useState(false)
     const [petName, setPetName] = useState('')
     const [petBreed, setPetBreed] = useState('')
@@ -18,7 +18,10 @@ function PetModal({onSubmit, title}) {
     };
     
     const handleClose = () => {
-        setOpen(false);
+        setOpen(false); 
+        setPetName('')
+        setPetBreed('')
+        setPetType('')
     };
 
     const sendInfo = () => {
@@ -28,13 +31,22 @@ function PetModal({onSubmit, title}) {
 
     useEffect(() => {
         let info = {
-            id: Date.now(),
+            id: pet.id || Date.now(),
             name: petName,
             breed: petBreed,
             type: petType
         }
         setFullPet(info)
     }, [petName, petBreed, petType])
+
+    useEffect(() => {
+        if(pet.name) {
+            setPetName(pet.name)
+            setPetBreed(pet.breed)
+            setPetType(pet.type)
+        }
+            
+    }, [pet])
 
     return (
         <div>
@@ -57,6 +69,7 @@ function PetModal({onSubmit, title}) {
                         margin="dense" 
                         helperText="Write Pet Name"
                         fullWidth
+                        value={petName || ''}
                         onChange={(event) => setPetName(event.target.value)}
                     />
                     <TextField 
@@ -65,6 +78,7 @@ function PetModal({onSubmit, title}) {
                         margin="dense" 
                         helperText="Write Pet Breed"
                         fullWidth
+                        value={petBreed || ''}
                         onChange={(event) => setPetBreed(event.target.value)}
                     />
                     <TextField 
@@ -73,6 +87,7 @@ function PetModal({onSubmit, title}) {
                         margin="dense" 
                         helperText="Write Pet Type"
                         fullWidth
+                        value={petType || ''}
                         onChange={(event) => setPetType(event.target.value)}
                     />
                 </DialogContent>

@@ -22,7 +22,7 @@ function PetList() {
     };
 
     const handleUpdatePet = (pet) => {
-        // const ownerId = prompt('Owners Id of the pet', pet.owner?.id);
+
         store.updatePet(pet.id, pet)
         // if(ownerId !== pet.owner?.id) {
         //     store.assignOwnerToPet(ownerId, pet.id)
@@ -80,7 +80,7 @@ function PetList() {
                                                         spacing={2}
                                                     >
                                                         <Button variant="outlined" onClick={() => handleDeletePet(row)}>Delete</Button>
-                                                        <PetModal onSubmit={handleUpdatePet} title='Update' />
+                                                        <PetModal onSubmit={handleUpdatePet} title='Update' pet={row}/>
                                                     </Stack>
                                                 </TableCell>
                                             )

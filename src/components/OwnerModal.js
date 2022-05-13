@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from "@material-ui/core/TextField"
 import Button from '@mui/material/Button';
 
-function OwnerModal({onSubmit, title}) {
+function OwnerModal({onSubmit, title, owner = {}}) {
     const [open, setOpen] = useState(false)
     const [ownerFirstName, setOwnerFirstName] = useState('')
     const [ownerLastName, setOwnerLastName] = useState('')
@@ -17,22 +17,31 @@ function OwnerModal({onSubmit, title}) {
     };
     
     const handleClose = () => {
-        setOpen(false);
+        setOpen(false); 
+        setOwnerFirstName('')
+        setOwnerLastName('')
     };
 
     const sendInfo = () => {
         onSubmit(fullInfo)
-        handleClose()
+        handleClose()       
     }
 
     useEffect(() => {
         let info = {
-            id: Date.now(),
+            id: owner.id || Date.now(),
             firstName: ownerFirstName,
             lastName: ownerLastName,
         }
         setFullInfo(info)
     }, [ownerFirstName, ownerLastName])
+
+    useEffect(() => {
+        if(owner.firstName) {
+            setOwnerFirstName(owner.firstName)
+            setOwnerLastName(owner.lastName)
+        }                    
+}, [owner])
 
     return (
         <div>
@@ -55,6 +64,7 @@ function OwnerModal({onSubmit, title}) {
                         margin="dense" 
                         helperText="Write Owner First Name"
                         fullWidth
+                        value={ownerFirstName}
                         onChange={(event) => setOwnerFirstName(event.target.value)}
                     />
                     <TextField 
@@ -63,6 +73,7 @@ function OwnerModal({onSubmit, title}) {
                         margin="dense" 
                         helperText="Write Owner Last Name"
                         fullWidth
+                        value={ownerLastName}
                         onChange={(event) => setOwnerLastName(event.target.value)}
                     />
                 </DialogContent>

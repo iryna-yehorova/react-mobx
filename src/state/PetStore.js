@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, autorun, runInAction } from 'mobx'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 
 class PetOwnerStore {
     pets = [];
@@ -10,7 +10,6 @@ class PetOwnerStore {
             owners: observable,
             totalOwners: computed,
             totalPets: computed,
-            storeDetails: computed,
             getPetsByOwner: action,
             createPet: action,
             createOwner: action,
@@ -20,7 +19,6 @@ class PetOwnerStore {
             deleteOwner: action,
             assignOwnerToPet: action
         }) 
-        autorun(() => this.logStoreDetails())
         runInAction(() => this.prefetchData())
     }
 
@@ -85,31 +83,22 @@ class PetOwnerStore {
         }
     }
 
-    //store 
-    get storeDetails() {
-        return `We have ${this.totalPets} total pets and ${this.totalOwners} total Owners`
-    }
-
-    logStoreDetails() {
-        console.log(this.storeDetails)
-    }
-
     prefetchData = () => {
         const owners = [
             {
                 firstName: 'Elijah',
                 lastName: 'Smith',
-                id: Date.now() + 13
+                id: Date.now() + 3
             },
             {
                 firstName: 'Joe',
                 lastName: 'Cohens',
-                id: Date.now() + 11
+                id: Date.now() + 1
             }
         ]
         const pets = [
             {
-                id: Date.now() + 10,
+                id: Date.now() + 2,
                 name: 'Lucy',
                 breed: 'Pomeranian',
                 type: 'Dog'

@@ -73,7 +73,7 @@ function OwnerList() {
                                                             spacing={2}
                                                         >
                                                         <Button variant="outlined" onClick={() => handleDeleteOwner(row)}>Delete</Button>
-                                                        <OwnerModal onSubmit={handleUpdateOwner} title='Update' />
+                                                        <OwnerModal onSubmit={handleUpdateOwner} title='Update' owner={row} />
                                                         </Stack>
                                                     </TableCell>
                                                 
