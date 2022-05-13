@@ -8,6 +8,9 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 
 function OwnerList() {
     const store = useContext(StateContext)
@@ -33,6 +36,15 @@ function OwnerList() {
 
     return (
         <div>
+            <Stack  
+                direction="row"
+                spacing={2}
+                style={{ margin: '15px' }}
+                alignItems="center"
+            >
+                <h2>Owner List</h2>
+                <OwnerModal onSubmit={handleAddOwner} title="Add new owner" />
+            </Stack>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -40,7 +52,6 @@ function OwnerList() {
                             {columns.map((column) => (
                                 <TableCell
                                     key={column.id}
-                                    align={column.align}
                                     style={{ minWidth: column.minWidth }}
                                 >
                                     {column.label}
@@ -54,16 +65,23 @@ function OwnerList() {
                                 <TableRow hover key={row.id}>
                                     {columns.map((column) => {
                                         if(column.id === 'action') {
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    <button onClick={() => handleDeleteOwner(row)}>Delete owner</button>
-                                                    <OwnerModal onSubmit={handleUpdateOwner} title='Update owner' />
-                                                </TableCell>
+                                            return (                                              
+                                                    <TableCell key={column.id}>
+                                                        <Stack
+                                                            direction="row"
+                                                            divider={<Divider orientation="vertical" flexItem />}
+                                                            spacing={2}
+                                                        >
+                                                        <Button variant="outlined" onClick={() => handleDeleteOwner(row)}>Delete</Button>
+                                                        <OwnerModal onSubmit={handleUpdateOwner} title='Update' />
+                                                        </Stack>
+                                                    </TableCell>
+                                                
                                             )
                                         } else {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell key={column.id}>
                                                     {value}                        
                                                 </TableCell>
                                             )
@@ -75,7 +93,6 @@ function OwnerList() {
                     </TableBody>
                 </Table>
             </TableContainer>         
-            <OwnerModal onSubmit={handleAddOwner} title="Add new owner"/>
         </div>
     )
 }
