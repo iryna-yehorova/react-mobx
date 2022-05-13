@@ -5,12 +5,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from "@material-ui/core/TextField"
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
 
-function PetModal({onSubmit, title, pet = {}}) {
+function PetModal({onSubmit, title, pet, ownerList}) {
     const [open, setOpen] = useState(false)
     const [petName, setPetName] = useState('')
     const [petBreed, setPetBreed] = useState('')
     const [petType, setPetType] = useState('')
+    const [petOwner, setPetOwner] = useState('')
     const [fullPet, setFullPet] = useState({})
 
     const handleOpen = () => {
@@ -19,9 +21,6 @@ function PetModal({onSubmit, title, pet = {}}) {
     
     const handleClose = () => {
         setOpen(false); 
-        setPetName('')
-        setPetBreed('')
-        setPetType('')
     };
 
     const sendInfo = () => {
@@ -34,18 +33,17 @@ function PetModal({onSubmit, title, pet = {}}) {
             id: pet.id || Date.now(),
             name: petName,
             breed: petBreed,
-            type: petType
+            type: petType,
+            owner: petOwner
         }
         setFullPet(info)
-    }, [petName, petBreed, petType])
+    }, [petName, petBreed, petType, petOwner])
 
     useEffect(() => {
-        if(pet.name) {
-            setPetName(pet.name)
-            setPetBreed(pet.breed)
-            setPetType(pet.type)
-        }
-            
+        setPetName(pet.name)
+        setPetBreed(pet.breed)
+        setPetType(pet.type)
+        setPetOwner(pet.owner)            
     }, [pet])
 
     return (
@@ -89,6 +87,13 @@ function PetModal({onSubmit, title, pet = {}}) {
                         fullWidth
                         value={petType || ''}
                         onChange={(event) => setPetType(event.target.value)}
+                    />
+                    <Autocomplete
+                        disablePortal
+                        options={ownerList ? ownerList : []}
+                        onInputChange={(event) => setPetOwner(event.target.textContent)}
+                        loadingText="Loading list of owners"
+                        renderInput={(params) => <TextField {...params} label="Owner" />}
                     />
                 </DialogContent>
                 <DialogActions>

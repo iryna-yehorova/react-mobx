@@ -18,15 +18,10 @@ function PetList() {
      
     const handleAddPet = pet => {
         store.createPet(pet);
-        // store.assignOwnerToPet(ownerId, pet.id)
     };
 
     const handleUpdatePet = (pet) => {
-
         store.updatePet(pet.id, pet)
-        // if(ownerId !== pet.owner?.id) {
-        //     store.assignOwnerToPet(ownerId, pet.id)
-        // }
     }
 
     const handleDeletePet = (pet) => {
@@ -38,6 +33,7 @@ function PetList() {
         { id: 'name', label: 'Name', minWidth: 150 },
         { id: 'breed', label: 'Breed', minWidth: 150 },
         { id: 'type', label: 'Type', minWidth: 150 },
+        { id: 'owner', label: 'Owner\'s Name', minWidth: 150 },
         { id: 'action'}
     ];
 
@@ -50,7 +46,7 @@ function PetList() {
                 alignItems="center"
             >
                 <h2>Pet List</h2>
-                <PetModal onSubmit={handleAddPet} title="Add new pet"/>
+                <PetModal onSubmit={handleAddPet} title="Add new pet" ownerList={store.owners} key="add" pet={{name: '', type: '', breed: '', owner: ''}}/>
             </Stack>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -80,7 +76,7 @@ function PetList() {
                                                         spacing={2}
                                                     >
                                                         <Button variant="outlined" onClick={() => handleDeletePet(row)}>Delete</Button>
-                                                        <PetModal onSubmit={handleUpdatePet} title='Update' pet={row}/>
+                                                        <PetModal onSubmit={handleUpdatePet} title='Update' pet={row} key={column.id} ownerList={store.owners}/>
                                                     </Stack>
                                                 </TableCell>
                                             )

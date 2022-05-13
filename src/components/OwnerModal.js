@@ -32,6 +32,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
             id: owner.id || Date.now(),
             firstName: ownerFirstName,
             lastName: ownerLastName,
+            label: `${ownerFirstName} ${ownerLastName}`
         }
         setFullInfo(info)
     }, [ownerFirstName, ownerLastName])

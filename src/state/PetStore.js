@@ -16,8 +16,7 @@ class PetOwnerStore {
             updatePet: action,
             updateOwner: action,
             deletePet: action,
-            deleteOwner: action,
-            assignOwnerToPet: action
+            deleteOwner: action
         }) 
         runInAction(() => this.prefetchData())
     }
@@ -75,25 +74,20 @@ class PetOwnerStore {
         return this.owners.length
     }
 
-    assignOwnerToPet(ownerId, petId) {
-        const petIndexAtId = this.pets.findIndex(pet => pet.id === petId)
-        const ownerIndexAtId = this.owners.findIndex(owner => owner.id === ownerId)
-        if (petIndexAtId > -1 && ownerIndexAtId > -1) {
-            this.pets[petIndexAtId].owner = this.owners[petIndexAtId]
-        }
-    }
 
     prefetchData = () => {
         const owners = [
             {
                 firstName: 'Elijah',
                 lastName: 'Smith',
-                id: Date.now() + 3
+                id: Date.now() + 3,
+                label: 'Elijah Smith'
             },
             {
                 firstName: 'Joe',
                 lastName: 'Cohens',
-                id: Date.now() + 1
+                id: Date.now() + 1,
+                label: 'Joe Cohens'
             }
         ]
         const pets = [
@@ -101,18 +95,15 @@ class PetOwnerStore {
                 id: Date.now() + 2,
                 name: 'Lucy',
                 breed: 'Pomeranian',
-                type: 'Dog'
+                type: 'Dog',
+                owner: 'Joe Cohens'
             }
         ]
 
         setTimeout(() => {
             owners.forEach(owner => this.createOwner(owner))
             pets.forEach(pet => {
-                this.createPet(pet);
-                if(pet.ownerId) {
-                     this.assignOwnerToPet(pet.ownerId, pet.id)
-                }
-               
+                this.createPet(pet)
             })
         }, 3000)
     }
