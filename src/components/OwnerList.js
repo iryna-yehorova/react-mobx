@@ -1,17 +1,13 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite'
+import OwnerModal from './OwnerModal'
 
 function OwnerList({ store }) {
-    const handleAddOwner = () => {
-        const firstName = prompt('Owner first name')
-        const lastName = prompt('Owner last name')
-
-        store.createOwner({ id: Date.now(), firstName, lastName})
+    const handleAddOwner = (owner) => {
+        store.createOwner(owner)
     }
 
     const handleUpdateOwner = owner => {
-        owner.firstName = prompt('Owner firstname', owner.firstName)
-        owner.lastName = prompt('Owner lastname', owner.lastName)
         store.updateOwner(owner.id, owner)
     }
 
@@ -40,14 +36,14 @@ function OwnerList({ store }) {
                                 <td>{owner.lastName}</td>
                                 <td>
                                     <button onClick={() => handleDeleteOwner(owner)}>Delete owner</button>
-                                    <button onClick={() => handleUpdateOwner(owner)}>Update owner</button>
+                                    <OwnerModal onSubmit={handleUpdateOwner} title="Update owner" />
                                 </td>
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
-            <button onClick={handleAddOwner}>Ann new owner</button>
+            <OwnerModal onSubmit={handleAddOwner} title="Add new owner"/>
         </div>
     )
 }

@@ -1,26 +1,19 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite'
+import PetModal from './PetModal'
 
 function PetList({ store }) {
-    const handleAddPet = () => {
-        const name = prompt('Name of the pet');
-        const type = prompt('Type of the pet');
-        const breed = prompt('Breed of the pet');
-        const ownerId = prompt('Owners Id of the pet');
-
-        const pet = store.createPet({ id: Date.now(), name, breed, type });
-        store.assignOwnerToPet(ownerId, pet.id)
+    const handleAddPet = pet => {
+        store.createPet(pet);
+        // store.assignOwnerToPet(ownerId, pet.id)
     };
 
     const handleUpdatePet = (pet) => {
-        pet.name = prompt('Name of the pet', pet.name);
-        pet.type = prompt('Type of the pet', pet.type);
-        pet.breed = prompt('Breed of the pet', pet.breed);
-        const ownerId = prompt('Owners Id of the pet', pet.owner?.id);
+        // const ownerId = prompt('Owners Id of the pet', pet.owner?.id);
         store.updatePet(pet.id, pet)
-        if(ownerId !== pet.owner?.id) {
-            store.assignOwnerToPet(ownerId, pet.id)
-        }
+        // if(ownerId !== pet.owner?.id) {
+        //     store.assignOwnerToPet(ownerId, pet.id)
+        // }
     }
 
     const handleDeletePet = (pet) => {
@@ -48,17 +41,17 @@ function PetList({ store }) {
                                 <td>{pet.name}</td>
                                 <td>{pet.type}</td>
                                 <td>{pet.breed}</td>
-                                <td>{pet.owner ? `${pet.owner?.firstName} ${pet.owner?.lastName}` : '---'}</td>
+                                {/* <td>{pet.owner ? `${pet.owner?.firstName} ${pet.owner?.lastName}` : '---'}</td> */}
                                 <td> 
                                     <button onClick={() => handleDeletePet(pet)}>Delete pet</button>
-                                    <button onClick={() => handleUpdatePet(pet)}>Update pet</button>
+                                    <PetModal onSubmit={handleUpdatePet} title="Update pet"/>
                                 </td>
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
-            <button onClick={handleAddPet}>Add new pet</button>
+            <PetModal onSubmit={handleAddPet} title="Add new pet"/>
         </div>
     )
 }
