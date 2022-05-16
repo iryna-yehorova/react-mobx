@@ -14,7 +14,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
     const [open, setOpen] = useState(false)
     const [ownerFirstName, setOwnerFirstName] = useState('')
     const [ownerLastName, setOwnerLastName] = useState('')
-    const [ownerPets, setOwnerPets] = useState([])
+    const [ownerPet, setOwnerPet] = useState('')
     const [fullInfo, setFullInfo] = useState('')
 
     const handleOpen = () => {
@@ -36,10 +36,10 @@ function OwnerModal({onSubmit, title, owner = {}}) {
             firstName: ownerFirstName,
             lastName: ownerLastName,
             label: `${ownerFirstName} ${ownerLastName}`,
-            pets: ownerPets
+            pets: ownerPet
         }
         setFullInfo(info)
-    }, [ownerFirstName, ownerLastName, ownerPets])
+    }, [ownerFirstName, ownerLastName, ownerPet])
 
     useEffect(() => {
         setOwnerFirstName(owner.firstName)
@@ -82,7 +82,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                      <Autocomplete
                         disablePortal
                         options={store.pets}
-                        onInputChange={(event) => setOwnerPets(event.target.textContent)}
+                        onInputChange={(event) => setOwnerPet(event.target.textContent)}
                         loadingText="Loading list of pets"
                         renderInput={(params) => 
                             <TextField {...params} 

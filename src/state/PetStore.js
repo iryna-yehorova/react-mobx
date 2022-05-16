@@ -88,7 +88,8 @@ class PetOwnerStore {
                 firstName: 'Joe',
                 lastName: 'Cohens',
                 id: Date.now() + 1,
-                label: 'Joe Cohens'
+                label: 'Joe Cohens',
+                pet: 'Lucy'
             }
         ]
         const pets = [
