@@ -31,6 +31,7 @@ function OwnerList() {
         { id: 'id', label: 'Id', minWidth: 100 },
         { id: 'firstName', label: 'First Name', minWidth: 150 },
         { id: 'lastName', label: 'Last Name', minWidth: 150 },
+        { id: 'pet', label: 'Pet', minWidth: 150 },
         { id: 'action'}
     ];
 

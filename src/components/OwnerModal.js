@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from "@material-ui/core/TextField"
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete'
+import StateContext from '../helpers/StateContext'
 
 function OwnerModal({onSubmit, title, owner = {}}) {
+    const store = useContext(StateContext)
+
     const [open, setOpen] = useState(false)
     const [ownerFirstName, setOwnerFirstName] = useState('')
     const [ownerLastName, setOwnerLastName] = useState('')
+    const [ownerPets, setOwnerPets] = useState([])
     const [fullInfo, setFullInfo] = useState('')
 
     const handleOpen = () => {
@@ -18,8 +23,6 @@ function OwnerModal({onSubmit, title, owner = {}}) {
     
     const handleClose = () => {
         setOpen(false); 
-        setOwnerFirstName('')
-        setOwnerLastName('')
     };
 
     const sendInfo = () => {
@@ -32,16 +35,15 @@ function OwnerModal({onSubmit, title, owner = {}}) {
             id: owner.id || Date.now(),
             firstName: ownerFirstName,
             lastName: ownerLastName,
-            label: `${ownerFirstName} ${ownerLastName}`
+            label: `${ownerFirstName} ${ownerLastName}`,
+            pets: ownerPets
         }
         setFullInfo(info)
-    }, [ownerFirstName, ownerLastName])
+    }, [ownerFirstName, ownerLastName, ownerPets])
 
     useEffect(() => {
-        if(owner.firstName) {
-            setOwnerFirstName(owner.firstName)
-            setOwnerLastName(owner.lastName)
-        }                    
+        setOwnerFirstName(owner.firstName)
+        setOwnerLastName(owner.lastName)                   
 }, [owner])
 
     return (
@@ -65,7 +67,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                         margin="dense" 
                         helperText="Write Owner First Name"
                         fullWidth
-                        value={ownerFirstName}
+                        value={ownerFirstName || ''}
                         onChange={(event) => setOwnerFirstName(event.target.value)}
                     />
                     <TextField 
@@ -74,8 +76,23 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                         margin="dense" 
                         helperText="Write Owner Last Name"
                         fullWidth
-                        value={ownerLastName}
+                        value={ownerLastName || ''}
                         onChange={(event) => setOwnerLastName(event.target.value)}
+                    />
+                     <Autocomplete
+                        disablePortal
+                        options={store.pets}
+                        onInputChange={(event) => setOwnerPets(event.target.textContent)}
+                        loadingText="Loading list of pets"
+                        renderInput={(params) => 
+                            <TextField {...params} 
+                                label="Pet" 
+                                variant="outlined" 
+                                margin="dense" 
+                                helperText="Choose Pet"
+                                fullWidth
+                            />
+                        }
                     />
                 </DialogContent>
                 <DialogActions>

@@ -23,6 +23,7 @@ class PetOwnerStore {
 
     //pets
     createPet(pet = { id: 0, name: '', type: '', breed: '', owner: null }) {
+        pet.label = pet.name
         this.pets.push(pet)
     }
 

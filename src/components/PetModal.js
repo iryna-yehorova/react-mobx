@@ -93,7 +93,15 @@ function PetModal({onSubmit, title, pet, ownerList}) {
                         options={ownerList ? ownerList : []}
                         onInputChange={(event) => setPetOwner(event.target.textContent)}
                         loadingText="Loading list of owners"
-                        renderInput={(params) => <TextField {...params} label="Owner" />}
+                        renderInput={(params) => 
+                            <TextField {...params} 
+                                label="Owner" 
+                                variant="outlined" 
+                                margin="dense" 
+                                helperText="Choose Owner Name"
+                                fullWidth
+                            />
+                        }
                     />
                 </DialogContent>
                 <DialogActions>
