@@ -24,6 +24,11 @@ class PetOwnerStore {
     //pets
     createPet(pet = { id: 0, name: '', type: '', breed: '', owner: null }) {
         pet.label = pet.name
+        if (this.owners && this.owners.length > 0) {
+            let owner = this.owners.find(o => o.label === pet.owner)
+            owner.pet = pet.name 
+        }
+
         this.pets.push(pet)
     }
 
@@ -50,9 +55,13 @@ class PetOwnerStore {
     }
 
     //owners
-    createOwner(owner = { id: 0, firstName: '', lastName: ''}) {
+    createOwner(owner = { id: 0, firstName: '', lastName: '', pet: '', label: ''}) {
         if(!owner.firstName || !owner.lastName) {
             return 
+        }
+        if(this.pets && this.pets.length > 0) {
+            let pet = this.pets.find(p => p.name === owner.pet)
+            pet.owner = owner.label
         }
         this.owners.push(owner)
     }

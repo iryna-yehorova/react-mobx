@@ -67,7 +67,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                         margin="dense" 
                         helperText="Write Owner First Name"
                         fullWidth
-                        value={ownerFirstName || ''}
+                        value={ownerFirstName}
                         onChange={(event) => setOwnerFirstName(event.target.value)}
                     />
                     <TextField 
@@ -76,7 +76,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                         margin="dense" 
                         helperText="Write Owner Last Name"
                         fullWidth
-                        value={ownerLastName || ''}
+                        value={ownerLastName}
                         onChange={(event) => setOwnerLastName(event.target.value)}
                     />
                      <Autocomplete
