@@ -35,15 +35,16 @@ function OwnerModal({onSubmit, title, owner = {}}) {
             id: owner.id || Date.now(),
             firstName: ownerFirstName,
             lastName: ownerLastName,
-            label: `${ownerFirstName} ${ownerLastName}`,
             pets: ownerPet
         }
         setFullInfo(info)
-    }, [ownerFirstName, ownerLastName, ownerPet])
+    }, [ownerFirstName, ownerLastName])
 
     useEffect(() => {
+        if(owner.firstName) {
         setOwnerFirstName(owner.firstName)
-        setOwnerLastName(owner.lastName)                   
+        setOwnerLastName(owner.lastName)  
+    }           
 }, [owner])
 
     return (
