@@ -9,11 +9,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 function PetModal({onSubmit, title, pet, ownerList}) {
     const [open, setOpen] = useState(false)
-    const [petName, setPetName] = useState('')
-    const [petBreed, setPetBreed] = useState('')
-    const [petType, setPetType] = useState('')
-    const [petOwner, setPetOwner] = useState('')
-    const [fullPet, setFullPet] = useState({})
+    const [newPet, setNewPet] = useState({name: '', breed: '', type: '', owner: '', id: ''})
 
     const handleOpen = () => {
         setOpen(true);
@@ -24,26 +20,22 @@ function PetModal({onSubmit, title, pet, ownerList}) {
     };
 
     const sendInfo = () => {
-        onSubmit(fullPet)
+        setNewPet(prevState => ({
+            ...prevState,
+            id: pet.id || Date.now()
+        }))
+        onSubmit(newPet)
         handleClose()
     }
 
     useEffect(() => {
-        let info = {
-            id: pet.id || Date.now(),
-            name: petName,
-            breed: petBreed,
-            type: petType,
-            owner: petOwner
-        }
-        setFullPet(info)
-    }, [petName, petBreed, petType, petOwner])
-
-    useEffect(() => {
-        setPetName(pet.name)
-        setPetBreed(pet.breed)
-        setPetType(pet.type)
-        setPetOwner(pet.owner)            
+       setNewPet(prevState => ({
+           ...prevState,
+           name: pet.name,
+           breed: pet.breed,
+           type: pet.type,
+           owner: pet.owner
+       }))        
     }, [pet])
 
     return (
@@ -67,8 +59,11 @@ function PetModal({onSubmit, title, pet, ownerList}) {
                         margin="dense" 
                         helperText="Write Pet Name"
                         fullWidth
-                        value={petName || ''}
-                        onChange={(event) => setPetName(event.target.value)}
+                        value={newPet.name|| ''}
+                        onChange={(event) => setNewPet(prevState => ({
+                            ...prevState,
+                            name: event.target.value
+                        }))}
                     />
                     <TextField 
                         label="Breed" 
@@ -76,8 +71,11 @@ function PetModal({onSubmit, title, pet, ownerList}) {
                         margin="dense" 
                         helperText="Write Pet Breed"
                         fullWidth
-                        value={petBreed || ''}
-                        onChange={(event) => setPetBreed(event.target.value)}
+                        value={newPet.breed || ''}
+                        onChange={(event) => setNewPet(prevState => ({
+                            ...prevState,
+                            breed: event.target.value
+                        }))}
                     />
                     <TextField 
                         label="Type" 
@@ -85,13 +83,19 @@ function PetModal({onSubmit, title, pet, ownerList}) {
                         margin="dense" 
                         helperText="Write Pet Type"
                         fullWidth
-                        value={petType || ''}
-                        onChange={(event) => setPetType(event.target.value)}
+                        value={newPet.type || ''}
+                        onChange={(event) => setNewPet(prevState =>  ({
+                            ...prevState,
+                            type: event.target.value
+                        }))}
                     />
                     <Autocomplete
                         disablePortal
                         options={ownerList ? ownerList : []}
-                        onInputChange={(event) => setPetOwner(event.target.textContent)}
+                        onInputChange={(event) => setNewPet(prevState => ({
+                            ...prevState,
+                            owner: event.target.textContext
+                        }))}
                         loadingText="Loading list of owners"
                         renderInput={(params) => 
                             <TextField {...params} 

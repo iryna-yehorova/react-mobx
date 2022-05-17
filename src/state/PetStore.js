@@ -22,8 +22,10 @@ class PetOwnerStore {
     }
 
     //pets
-    createPet(pet = { id: 0, name: '', type: '', breed: '', owner: null }) {
+    createPet(pet = { id: 0, name: '', type: '', breed: '', owner: null }) {   
         pet.label = pet.name
+        pet.id = pet.id ? pet.id : Date.now()
+
         if (pet.owner && this.owners && this.owners.length > 0) {
             let owner = this.owners.find(o => o.label === pet.owner)
             owner.pet = pet.name 
@@ -56,8 +58,12 @@ class PetOwnerStore {
 
     //owners
     createOwner(owner = { id: 0, firstName: '', lastName: '', pet: '', label: ''}) {
-        owner.label = `${owner.firstName} ${owner.lastName}`
-        this.owners.push(owner)
+        const newItem = {
+            ...owner.petOwner,
+            id: owner.id ? owner.id : Date.now(),
+            label: `${owner.petOwner.firstName} ${owner.petOwner.lastName}`
+        }
+        this.owners.push(newItem)
     }
 
     updateOwner(ownerId, update) {
@@ -81,18 +87,18 @@ class PetOwnerStore {
 
     prefetchData = () => {
         const owners = [
-            {
-                firstName: 'Elijah',
-                lastName: 'Smith',
+            {   petOwner: {
+                    firstName: 'Elijah',
+                    lastName: 'Smith',
+                },              
                 id: Date.now() + 3,
-                label: 'Elijah Smith'
             },
-            {
-                firstName: 'Joe',
-                lastName: 'Cohens',
-                id: Date.now() + 1,
-                label: 'Joe Cohens',
-                pet: 'Lucy'
+            {   petOwner: {
+                    firstName: 'Joe',
+                    lastName: 'Cohens',
+                    pet: 'Lucy'
+                },                
+                id: Date.now() + 1,              
             }
         ]
         const pets = [

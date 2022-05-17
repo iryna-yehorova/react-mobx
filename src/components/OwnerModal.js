@@ -12,10 +12,7 @@ function OwnerModal({onSubmit, title, owner = {}}) {
     const store = useContext(StateContext)
 
     const [open, setOpen] = useState(false)
-    const [ownerFirstName, setOwnerFirstName] = useState('')
-    const [ownerLastName, setOwnerLastName] = useState('')
-    const [ownerPet, setOwnerPet] = useState('')
-    const [fullInfo, setFullInfo] = useState('')
+    const [petOwner, setPetOwner] = useState({id: '', firstName: '', lastName: '', pet: ''})
 
     const handleOpen = () => {
         setOpen(true);
@@ -26,26 +23,15 @@ function OwnerModal({onSubmit, title, owner = {}}) {
     };
 
     const sendInfo = () => {
-        onSubmit(fullInfo)
+        setPetOwner(prevState => ({
+            petOwner: {
+                ...prevState,
+                id: owner.id || Date.now()
+            }
+        }))
+        onSubmit(petOwner)
         handleClose()       
     }
-
-    useEffect(() => {
-        let info = {
-            id: owner.id || Date.now(),
-            firstName: ownerFirstName,
-            lastName: ownerLastName,
-            pets: ownerPet
-        }
-        setFullInfo(info)
-    }, [ownerFirstName, ownerLastName])
-
-    useEffect(() => {
-        if(owner.firstName) {
-        setOwnerFirstName(owner.firstName)
-        setOwnerLastName(owner.lastName)  
-    }           
-}, [owner])
 
     return (
         <div>
@@ -68,8 +54,13 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                         margin="dense" 
                         helperText="Write Owner First Name"
                         fullWidth
-                        value={ownerFirstName}
-                        onChange={(event) => setOwnerFirstName(event.target.value)}
+                        value={petOwner.firstName}
+                        onChange={(event) => setPetOwner(prevState => ({
+                            petOwner: {
+                                ...prevState.petOwner,
+                                firstName: event.target.value
+                            }
+                        }))}
                     />
                     <TextField 
                         label="Last Name" 
@@ -77,13 +68,23 @@ function OwnerModal({onSubmit, title, owner = {}}) {
                         margin="dense" 
                         helperText="Write Owner Last Name"
                         fullWidth
-                        value={ownerLastName}
-                        onChange={(event) => setOwnerLastName(event.target.value)}
+                        value={petOwner.lastName}
+                        onChange={(event) => setPetOwner(prevState => ({
+                            petOwner: {
+                                ...prevState.petOwner,
+                                lastName: event.target.value
+                            }
+                        }))}
                     />
                      <Autocomplete
                         disablePortal
                         options={store.pets}
-                        onInputChange={(event) => setOwnerPet(event.target.textContent)}
+                        onInputChange={(event) => setPetOwner(prevState => ({
+                            petOwner: {
+                                ...prevState.petOwner,
+                                pet: event.target.textContent
+                            }
+                        }))}
                         loadingText="Loading list of pets"
                         renderInput={(params) => 
                             <TextField {...params} 
